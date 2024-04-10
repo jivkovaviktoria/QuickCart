@@ -9,7 +9,7 @@ export default function ProductsTable({ products }) {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        navigate(`/search?query=${searchQuery}`);
+        navigate(`/search/${searchQuery}`);
     };
 
     return (
