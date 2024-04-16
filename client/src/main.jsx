@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ProductsTable from './components/products-table/ProductsTable.jsx';
 import SearchingResultDialog from './components/searching-result-dialog/SearchingResultDialog.jsx';
 import ProductDetails from './components/product-details/ProductsDetails.jsx';
+import ProductEdit from './components/product-edit/ProductEdit.jsx';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: 'product/:productId',
     element: <ProductDetails/>
+  },
+  {
+    path: 'product-edit/:productId',
+    element: <ProductEdit/>
   }
 ]);
 

@@ -8,5 +8,5 @@ export const useDiscountedPrice = (price, discountPercentage) => {
         setDiscountedPrice(newPrice);
     }, [price, discountPercentage]);
 
-    return discountedPrice;
+    return [discountedPrice, setDiscountedPrice];
 };

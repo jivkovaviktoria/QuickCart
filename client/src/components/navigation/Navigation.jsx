@@ -1,4 +1,5 @@
 import { ShoppingCartIcon } from '@heroicons/react/outline';
+import { Constants } from '../../utilities/Constants';
 import { Link } from 'react-router-dom';
 
 export default function Navigation() {
@@ -7,11 +8,11 @@ export default function Navigation() {
           <div className="container flex flex-row justify-between items-center">
             <div className="flex flex-row items-center">
               <ShoppingCartIcon className="h-8 w-8 mr-2 text-white"/>
-              <Link to="/" className="text-xl font-semibold">QuickCart</Link>
+              <Link to="/" className="text-xl font-semibold">{Constants.SHOP_NAME}</Link>
             </div>
             <div>
-              <Link to="/" className="px-4 py-2 hover:bg-gray-700 rounded">Home</Link>
-              <Link to="/products" className="px-4 py-2 hover:bg-gray-700 rounded">Products</Link>
+              <Link to="/" className="px-4 py-2 hover:bg-gray-700 rounded">{Constants.HOME}</Link>
+              <Link to="/products" className="px-4 py-2 hover:bg-gray-700 rounded">{Constants.PRODUCTS}</Link>
             </div>
           </div>
         </nav>
