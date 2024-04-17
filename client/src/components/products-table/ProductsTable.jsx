@@ -93,7 +93,7 @@ export default function ProductsTable({ category }) {
                     onClick={handlePrev}
                     disabled={currentPage === 1}
                     className={`mx-2 px-4 py-2 rounded text-white ${currentPage === 1 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'}`}>
-                    {Constants.PREV_PAGE}
+                    {Constants.PREVIOUS_PAGE}
                 </button>
                 <div className="mx-2">
                     {Constants.PAGE} {currentPage}

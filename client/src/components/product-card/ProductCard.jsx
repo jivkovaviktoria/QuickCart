@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Constants } from "../../utilities/Constants";
-import { useDiscountedPrice } from "../../hooks/UseDiscountPrice";
+import {useDiscountedPrice} from "../../hooks/UseDiscountPrice";
 
 export default function ProductCard({ product, view }) {
     const { title, price, brand, thumbnail, stock, discountPercentage } = product;
