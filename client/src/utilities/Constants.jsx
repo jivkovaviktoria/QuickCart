@@ -39,6 +39,6 @@ export class Constants {
     static DISCOUNT_PERCENTAGE = "Discount Percentage: ";
     static CATEGORY = "Category: ";
     static BRAND = "Brand: ";
-    static UPDATE_PRODICT = "Update Product";
+    static UPDATE_PRODUCT = "Update Product";
     static QUANTITY = "Quantity: ";
 }
