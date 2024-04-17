@@ -15,7 +15,7 @@ function App() {
     fetch(GET_CATEGORIES_URL)
       .then(res => res.json())
       .then(data => setCategories(data));
-  }, [selectedCategory]);
+  }, []);
 
   return (
     <div className="flex flex-col">

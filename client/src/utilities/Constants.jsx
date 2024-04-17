@@ -16,11 +16,15 @@ export class Constants {
     static ALL = "all";
     static SHOP_NAME = "QuickCart";
     static CATEGORIES = "Categories";
+    static LOADING = "Loading...";
+    static PAGE = "Page";
 
     //Actions
 
     static PREVIOUS = "prev";
+    static PREVIOUS_PAGE = "Previous";
     static NEXT = "next";
+    static NEXT_PAGE = "Next";
     static DELETE_MESSAGE = "Are you sure you want to delete this item?";
     static CONFIRM_DELETE = "Confirm Delete";
     static DELETE = "Delete";
@@ -28,6 +32,7 @@ export class Constants {
     static REMOVE = "X";
     static ADD_PRODUCT = "Add product";
     static EDIT_PRODUCT = "Edit product";
+    static SUBMIT = "Submit";
 
     //Product Details
 
@@ -41,4 +46,5 @@ export class Constants {
     static BRAND = "Brand: ";
     static UPDATE_PRODUCT = "Update Product";
     static QUANTITY = "Quantity: ";
+    static TEMPLATE_URL = "Thumbnail URL:"
 }

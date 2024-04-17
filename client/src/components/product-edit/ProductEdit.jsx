@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { ImageList } from '../common/image-list/ImageList';
 import { Constants } from '../../utilities/Constants';
+import { error } from 'autoprefixer/lib/utils';
 
 export default function ProductEdit() {
     const [productData, setProductData] = useState({});
@@ -12,47 +13,52 @@ export default function ProductEdit() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`https://dummyjson.com/products/${productId}`)
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        fetch(`${Constants.BASE_URL}/${productId}`, { signal: signal })
             .then(res => res.json())
             .then(data => {
                 setImages(data.images);
                 setProductData(data);
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                if (signal.aborted) return;
+                console.error(err);
+            }
+        );
+
+        return () => {
+            controller.abort();
+        };
     }, [productId]);
 
-    const handleChange = (e) => {
+    const handleChange = useCallback((e) => {
         const updatedProductData = { ...productData, [e.target.name]: e.target.value };
         setProductData(updatedProductData);
         setImages(updatedProductData.images);
-    };
+    }, [productData]);
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = useCallback(async (event) => {
         event.preventDefault();
 
-        try {
-            const { id, ...productDataWithoutId } = productData;
-            const updatedProductData = { ...productDataWithoutId, images };
+        const { id, ...productDataWithoutId } = productData;
+        const updatedProductData = { ...productDataWithoutId, images };
 
-            const response = await fetch(`https://dummyjson.com/products/${productId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedProductData)
-            });
+        const response = await fetch(`${Constants.BASE_URL}/${productId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedProductData)
+        }).catch((error) => console.error(error));
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-        } catch (error) {
-            console.error('There was a problem with the fetch operation: ' + error.message);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-    };
+    }, []);
 
-    const handleBack = () => {
+    const handleBack = useCallback(() => {
         navigate(-1);
-    };
+    }, [navigate]);
 
     return (
         <div className="max-w-2xl mx-auto p-4">

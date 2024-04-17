@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom';
 import { Constants } from '../../../utilities/Constants';
 
 export default function DeleteConfirmationModal({ isOpen, onClose, onDelete }) {
-    if (!isOpen) {
-        return null;
-    }
+    if (!isOpen) return null;
 
     return ReactDOM.createPortal(
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">

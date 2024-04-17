@@ -1,66 +1,61 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Constants } from '../../utilities/Constants';
-import { ArrowLeftIcon, StarIcon, ShoppingCartIcon, TagIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
-import { GET_ALL_PRODUCTS_URL } from '../../utilities/Constants';
+import { ArrowLeftIcon, StarIcon, ShoppingCartIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import { Constants, GET_ALL_PRODUCTS_URL } from '../../utilities/Constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import DeleteConfirmationModal from '../common/delete-confirmation-modal/DeleteConfirmationModal';
+import { useDiscountedPrice } from '../../hooks/UseDiscountPrice';
 
 export default function ProductDetails() {
     const [product, setProduct] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
+    const discountedPrice = useDiscountedPrice(product?.price, product?.discountPercentage);
 
     const { productId } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`${GET_ALL_PRODUCTS_URL}/${productId}`)
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        fetch(`${GET_ALL_PRODUCTS_URL}/${productId}`, { signal: signal })
             .then(res => res.json())
-            .then(data => setProduct(data))
-            .catch(err => console.error(err));
+            .then(data => { setProduct(data); })
+            .catch(err => {
+                if(signal.aborted) return;
+                console.error(err)
+            });
+
+        return () => {
+            controller.abort();
+        };
     }, [productId]);
 
-    const handleBack = () => {
+    const handleBack = useCallback(() => {
         navigate(-1);
-    };
+    }, [navigate]);
 
     const handleImageChange = (index) => {
         setCurrentImageIndex(index);
     };
 
     const navigateImage = (direction) => {
-        if (direction === 'prev') {
-            setCurrentImageIndex((prevIndex) => prevIndex > 0 ? prevIndex - 1 : product.images.length - 1);
-        } else {
-            setCurrentImageIndex((prevIndex) => prevIndex < product.images.length - 1 ? prevIndex + 1 : 0);
-        }
+        if (direction === Constants.PREVIOUS) setCurrentImageIndex((prevIndex) => prevIndex > 0 ? prevIndex - 1 : product.images.length - 1);
+        else setCurrentImageIndex((prevIndex) => prevIndex < product.images.length - 1 ? prevIndex + 1 : 0);
     };
 
     const handleDelete = async () => {
-        try {
-            const response = await fetch(`https://dummyjson.com/products/${product.id}`, {
-                method: 'DELETE',
-            });
+        const response = await fetch(`${Constants.BASE_URL}/${product.id}`, { method: 'DELETE', }).catch((error) => console.error(error));
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-            if (!response.ok)
-                throw new Error(`HTTP error! status: ${response.status}`);
-
-
-            const data = await response.json();
-            console.log(data);
-
-            setIsDeleteModalOpen(false);
-
-        } catch (error) {
-            console.error(error);
-        }
+        navigate(-2);
+        setIsDeleteModalOpen(false);
     };
 
     if (!product) {
-        return <div>Loading...</div>;
+        return <div>{Constants.LOADING}</div>;
     }
 
     return (
@@ -93,11 +88,14 @@ export default function ProductDetails() {
                     <p className="text-gray-700 mb-4">{product.description}</p>
 
                     <div className="mb-4">
-                        <span className="text-lg font-bold">${product.price}</span>
-                        {product.discountPercentage > 0 && (
-                            <span className="ml-2 text-sm text-green-600">
-                                <TagIcon className="inline h-4 w-4 mr-1" />Save {product.discountPercentage}%
-                            </span>
+                        {product.discountPercentage > 0 ? (
+                            <>
+                                <span className="line-through">${product.price}</span>
+                                <span className="text-green-500 ml-2">${discountedPrice}</span>
+                                <span className="text-red-500 ml-2">($-{product.discountPercentage}%)</span>
+                            </>
+                        ) : (
+                            <span>${price}</span>
                         )}
                     </div>
 
@@ -144,7 +142,7 @@ export default function ProductDetails() {
                 </div>
             </div>
 
-            {isDeleteModalOpen && 
+            {isDeleteModalOpen &&
                 <DeleteConfirmationModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} onDelete={handleDelete} />
             }
         </div>

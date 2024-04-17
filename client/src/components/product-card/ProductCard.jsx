@@ -4,8 +4,7 @@ import { useDiscountedPrice } from "../../hooks/UseDiscountPrice";
 
 export default function ProductCard({ product, view }) {
     const { title, price, brand, thumbnail, stock, discountPercentage } = product;
-
-    const [discountedPrice, setDiscountedPrice] = useDiscountedPrice(price, discountPercentage);
+    const discountedPrice = useDiscountedPrice(price, discountPercentage);
 
     return (
         <Link to={`/product/${product.id}`} className="no-underline text-black">
@@ -21,7 +20,7 @@ export default function ProductCard({ product, view }) {
                             <>
                                 <span className="line-through">${price}</span>
                                 <span className="text-green-500 ml-2">${discountedPrice}</span>
-                                <span className="text-red-500 ml-2">($-{discountPercentage}%)</span>
+                                <span className="text-red-500 ml-2">(-{discountPercentage}%)</span>
                             </>
                         ) : (
                             <span>${price}</span>
