@@ -15,12 +15,30 @@ export class Constants {
 
     static ALL = "all";
     static SHOP_NAME = "QuickCart";
-    static HOME = "Home";
-    static PRODUCTS = "Products";
     static CATEGORIES = "Categories";
 
-    static BRAND = "Brand: ";
-    static CATEGORY = "Category: ";
+    //Actions
+
     static PREVIOUS = "prev";
     static NEXT = "next";
+    static DELETE_MESSAGE = "Are you sure you want to delete this item?";
+    static CONFIRM_DELETE = "Confirm Delete";
+    static DELETE = "Delete";
+    static CANCEL = "Cancel";
+    static REMOVE = "X";
+    static ADD_PRODUCT = "Add product";
+    static EDIT_PRODUCT = "Edit product";
+
+    //Product Details
+
+    static PRODUCT_DETAILS = "Product Details";
+    static TITLE = "Title: ";
+    static DESCRIPTION = "Description: ";
+    static PRICE = "Price: ";
+    static IMAGES = "Images";
+    static DISCOUNT_PERCENTAGE = "Discount Percentage: ";
+    static CATEGORY = "Category: ";
+    static BRAND = "Brand: ";
+    static UPDATE_PRODICT = "Update Product";
+    static QUANTITY = "Quantity: ";
 }

@@ -7,6 +7,7 @@ import ProductsTable from './components/products-table/ProductsTable.jsx';
 import SearchingResultDialog from './components/searching-result-dialog/SearchingResultDialog.jsx';
 import ProductDetails from './components/product-details/ProductsDetails.jsx';
 import ProductEdit from './components/product-edit/ProductEdit.jsx';
+import ProductAdd from './components/product-add/ProductAdd.jsx';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: 'product-edit/:productId',
     element: <ProductEdit/>
+  },
+  {
+    path: '/product-add',
+    element: <ProductAdd/>
   }
 ]);
 

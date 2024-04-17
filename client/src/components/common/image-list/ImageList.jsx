@@ -1,4 +1,6 @@
+import { useMemo } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Constants } from '../../../utilities/Constants';
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -8,7 +10,8 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 export const ImageList = ({ images, setImages }) => {
-    console.log(images);
+    const memoizedImages = useMemo(() => images, [images]);
+    
     const handleDragEnd = (result) => {
         if (!result.destination) return;
         const items = reorder(images, result.source.index, result.destination.index);
@@ -25,15 +28,13 @@ export const ImageList = ({ images, setImages }) => {
         <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable droppableId="droppable">
                 {(provided) => (
-                    <div {...provided.droppableProps} ref={provided.innerRef}>
-                        {images?.map((img, index) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef} className='flex flex-wrap gap-2 py-5'>
+                        {memoizedImages?.map((img, index) => (
                             <Draggable key={img} draggableId={img} index={index}>
                                 {(provided) => (
-                                    <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                        <div style={{ position: 'relative', width: '100px', height: '100px' }}>
-                                            <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                            <button onClick={() => handleRemove(index)} style={{ position: 'absolute', top: 0, right: 0 }}>X</button>
-                                        </div>
+                                    <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className='relative w-24 h-24'>
+                                        <img src={img} alt="" className='w-full h-full object-cover' />
+                                        <button onClick={() => handleRemove(index)} className='absolute top-0 right-0 bg-red-500 opacity-50 hover:opacity-100 p-1 text-white'>{Constants.REMOVE}</button>
                                     </div>
                                 )}
                             </Draggable>

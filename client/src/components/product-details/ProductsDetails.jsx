@@ -3,7 +3,8 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Constants } from '../../utilities/Constants';
 import { ArrowLeftIcon, StarIcon, ShoppingCartIcon, TagIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 import { GET_ALL_PRODUCTS_URL } from '../../utilities/Constants';
-import { createPortal } from 'react-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import DeleteConfirmationModal from '../common/delete-confirmation-modal/DeleteConfirmationModal';
 
 export default function ProductDetails() {
@@ -46,7 +47,7 @@ export default function ProductDetails() {
 
             if (!response.ok)
                 throw new Error(`HTTP error! status: ${response.status}`);
-            
+
 
             const data = await response.json();
             console.log(data);
@@ -68,16 +69,6 @@ export default function ProductDetails() {
                 <button onClick={handleBack} className="p-2 rounded-full bg-gray-200 mr-2">
                     <ArrowLeftIcon className="h-5 w-5" />
                 </button>
-
-                <Link to={`/product-edit/${product.id}`} className="no-underline text-black">
-                    <div className="flex flex-row justify-end items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                        </svg>
-                    </div>
-                </Link>
-                <button onClick={() => setIsDeleteModalOpen(true)}>Delete Item</button>
-                <DeleteConfirmationModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} onDelete={handleDelete} />
             </div>
 
             <div className="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -135,6 +126,27 @@ export default function ProductDetails() {
                     </div>
                 </div>
             </div>
+
+            <div className='flex flex-row justify-end gap-3 mt-2 items-center'>
+                <Link to={`/product-edit/${product.id}`} className="no-underline text-black">
+                    <div className="flex justify-between items-center">
+                        <button className="bg-green-500 text-white p-2 rounded flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                            </svg>
+                        </button>
+                    </div>
+                </Link>
+                <div className="flex justify-between items-center">
+                    <button onClick={() => setIsDeleteModalOpen(true)} className="bg-red-500 text-white p-2 rounded flex items-center">
+                        <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                </div>
+            </div>
+
+            {isDeleteModalOpen && 
+                <DeleteConfirmationModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} onDelete={handleDelete} />
+            }
         </div>
     );
 }

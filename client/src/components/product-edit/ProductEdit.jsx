@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { ImageList } from '../common/image-list/ImageList';
+import { Constants } from '../../utilities/Constants';
 
 export default function ProductEdit() {
     const [productData, setProductData] = useState({});
@@ -30,11 +31,13 @@ export default function ProductEdit() {
         event.preventDefault();
 
         try {
-            const {id, ...productDataWithoutId} = productData;
+            const { id, ...productDataWithoutId } = productData;
+            const updatedProductData = { ...productDataWithoutId, images };
+
             const response = await fetch(`https://dummyjson.com/products/${productId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(productDataWithoutId)
+                body: JSON.stringify(updatedProductData)
             });
 
             if (!response.ok) {
@@ -57,11 +60,11 @@ export default function ProductEdit() {
                 <ArrowLeftIcon className="h-5 w-5" />
             </button>
             <form onSubmit={handleSubmit} className="bg-white p-4 shadow-md rounded-lg">
-                <h2 className="text-2xl font-bold mb-4">Edit Product</h2>
+                <h2 className="text-2xl font-bold mb-4">{Constants.EDIT_PRODUCT}</h2>
 
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
-                        Title
+                        {Constants.TITLE}
                     </label>
                     <input
                         type="text"
@@ -75,7 +78,7 @@ export default function ProductEdit() {
 
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
-                        Description
+                        {Constants.DESCRIPTION}
                     </label>
                     <textarea
                         type="textarea"
@@ -90,7 +93,7 @@ export default function ProductEdit() {
                 <div className="mb-4 flex flex-row justify-stretch items-center gap-2">
                     <div>
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
-                            Price
+                            {Constants.PRICE}
                         </label>
                         <input
                             type="number"
@@ -105,7 +108,7 @@ export default function ProductEdit() {
                     </div>
                     <div>
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="discount">
-                            Discount Percent
+                            {Constants.DISCOUNT_PERCENTAGE}
                         </label>
                         <input
                             type="number"
@@ -120,7 +123,7 @@ export default function ProductEdit() {
                     </div>
                     <div>
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="quantity">
-                            Quantity
+                            {Constants.STOCK}
                         </label>
                         <input
                             type="number"
@@ -135,9 +138,10 @@ export default function ProductEdit() {
                     </div>
                 </div>
 
+                <h1>{Constants.IMAGES}</h1>
                 <ImageList images={images} setImages={setImages} />
 
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Update Product</button>
+                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">{Constants.UPDATE_PRODUCT}</button>
             </form>
         </div>
     );

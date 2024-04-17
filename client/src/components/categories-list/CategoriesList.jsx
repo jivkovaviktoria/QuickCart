@@ -2,7 +2,7 @@ import { Constants } from "../../utilities/Constants";
 
 export default function CategoriesList({ categories, onCategorySelect }) {
     return (
-        <div className="bg-gray-100 p-4 mt-[50px] flex flex-col justify-start items-start">
+        <div className="bg-gray-100 mt-[50px] flex flex-col justify-start items-start w-[30%]">
             <button
                 onClick={() => onCategorySelect(Constants.ALL)}
                 className="text-lg p-2 hover:bg-gray-200 block">

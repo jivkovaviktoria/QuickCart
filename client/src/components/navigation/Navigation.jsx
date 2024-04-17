@@ -10,10 +10,6 @@ export default function Navigation() {
               <ShoppingCartIcon className="h-8 w-8 mr-2 text-white"/>
               <Link to="/" className="text-xl font-semibold">{Constants.SHOP_NAME}</Link>
             </div>
-            <div>
-              <Link to="/" className="px-4 py-2 hover:bg-gray-700 rounded">{Constants.HOME}</Link>
-              <Link to="/products" className="px-4 py-2 hover:bg-gray-700 rounded">{Constants.PRODUCTS}</Link>
-            </div>
           </div>
         </nav>
       );
